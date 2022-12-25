@@ -5,7 +5,7 @@ import COLORS from '../assets/colors/pColors'
 const HomeScreen = () => {
   return (
     <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-      <Image source={require("../assets/images/logo.png")}
+        <Image source={require("../assets/images/logo.png")}
               style={{width:200,height:200}}/>
     </View>
   )
