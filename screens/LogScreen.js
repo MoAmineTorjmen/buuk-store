@@ -11,7 +11,7 @@ const LogScreen = () => {
             <Image source={require("../assets/images/icons/APP_Background.png")} style={styles.backgroundImage} />
             <View style={styles.logoButtonsContainer}>
                 <Image source={require("../assets/images/icons/logo.png")} style={styles.logoStyle}/>
-                <TouchableOpacity style={[styles.buttonsStyle,{marginTop:100}]}
+                <TouchableOpacity style={[styles.buttonsStyle,{marginTop:150}]}
                     onPress={() => navigation.navigate("Home")}>
                     <Image source={require("../assets/images/icons/google-icon.png")} style={styles.iconsButtonStyle}/>
                     <Text style={styles.buttonsTextStyle}>Countinue with Google</Text>    
@@ -55,15 +55,15 @@ const styles = StyleSheet.create({
     },
     logoStyle :
     {
-        width:180,
-        height:180
+        width:220,
+        height:220
     },
     buttonsStyle : 
     {
         backgroundColor:"white",
         flexDirection:'row',
         alignItems:'center',
-        paddingVertical:15,
+        paddingVertical:20,
         paddingHorizontal:30,
         borderRadius:7,
         marginTop:10
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         color:COLORS.darkBlue,
         fontSize:17,
         fontWeight:'400',
-        marginLeft:15,
+        marginLeft:20,
         letterSpacing:0.5,
         width:220,
         
