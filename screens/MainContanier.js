@@ -9,7 +9,7 @@ import COLORS from '../assets/colors/pColors';
 
 const MainContanier = () => {
     const myLibraryName = "My Library";
-    const myBookStore = "BookStore";
+    const myBookStore = "Book Store";
     
     const Tab = createBottomTabNavigator();
 
@@ -30,7 +30,7 @@ const MainContanier = () => {
                         iconName = focused ? "basket" : "basket-outline";
                        
                     }
-                    return  <Ionicons name={iconName} size={35} color={COLORS.lightBlue} />  ;
+                    return  <Ionicons name={iconName} size={22} color={COLORS.lightBlue} style={{ fontWeight: '100'}} />  ;
                 },
                 tabBarStyle:  styles.tabBarStyle,
                 tabBarLabelStyle :  styles.tabBarLabelStyle,
@@ -49,17 +49,15 @@ const MainContanier = () => {
 const styles = StyleSheet.create({
     tabBarStyle :
     {
-        height:80,
-        marginHorizontal:20,
-        marginBottom :15,
+        height:60, 
         borderRadius:10,
         paddingBottom:10,
-        paddingTop:10,
-        position:"absolute", 
+        paddingTop:10, 
     },
     tabBarLabelStyle:
     {
-        fontSize:13,
+        fontSize:10,
+        marginTop:5,
         fontWeight:'500',
         color: COLORS.lightBlue
     } 

@@ -1,44 +1,93 @@
-import { View, Text, Image,StyleSheet,TouchableOpacity,FlatList } from 'react-native'
+import { View, Text, Image,StyleSheet,TouchableOpacity,FlatList,ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import COLORS from '../assets/colors/pColors'
+import AntDesignIcon from 'react-native-vector-icons/AntDesign'; 
 
 const MyLibrary = () => {
 
   const eBook =[ 
-    {name : "Game Of Thrones", img : "https://bdi.dlpdomain.com/album/9782205082944-couv.jpg"},
-    {name : "The Witcher", img : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRrq6cRK12zrAuOlcUjC7auIPLMdvUJSlS0IzoYkaGF5mOYFim1"},
-    {name : "Six of Crows", img : "https://cdn.cultura.com/cdn-cgi/image/width=768/media/pim/TITELIVE/63_9782017038375_1_75.jpg"},
-    {name : "Harry Potter", img : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT99IrfJ3_BVvv08GQfE1GO0w7fXygEag5pblx5mb3ItWfmuUa4"},
-    {name : "Lost", img : "https://m.media-amazon.com/images/P/0545928117.01._SCLZZZZZZZ_SX500_.jpg"},
+    {name : "Game Of Thrones", rate : 4.9, img : "https://bdi.dlpdomain.com/album/9782205082944-couv.jpg"},
+    {name : "The Witcher", rate : 4.2, img : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRrq6cRK12zrAuOlcUjC7auIPLMdvUJSlS0IzoYkaGF5mOYFim1"},
+    {name : "Six of Crows", rate : 2.0, img : "https://cdn.cultura.com/cdn-cgi/image/width=768/media/pim/TITELIVE/63_9782017038375_1_75.jpg"},
+    {name : "Harry Potter", rate : 4.2, img : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT99IrfJ3_BVvv08GQfE1GO0w7fXygEag5pblx5mb3ItWfmuUa4"},
+    {name : "Lost", rate : 3.5, img : "https://m.media-amazon.com/images/P/0545928117.01._SCLZZZZZZZ_SX500_.jpg"},
   ]
   return (
-    <View style={styles.Container}>
+
+    <ScrollView style={styles.Container}>
       <Image source={require("../assets/images/icons/APP_Background.png")} style={styles.backgroundImage} />
       <View style={styles.ReadinBookView}>
-        <Image source={require("../assets/images/icons/book-image.png")} style={{opacity:0.7}} />
+        <Image source={require("../assets/images/icons/book-image-with-color.png")} style={styles.headerImageIcon} />
         <Text style={styles.TextReadinBookView}>You don't have a book</Text>
         <TouchableOpacity style={styles.ButtonReadinBookView}>
-          <Text  style={styles.TextButtonReadinBookView}>Shop now</Text>
+          <Text  style={styles.TextButtonReadinBookView}>SHOP NOW !</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.bookList}>
-        <Text style={[styles.TextReadinBookView,{letterSpacing:1}]}>Ebook For You</Text>
-        <Text style={[styles.TextReadinBookView,{fontSize:15,letterSpacing:0,fontWeight:"300",marginTop:0}]}>Lorem Ipsum is simply dummy text of the printing </Text>
+        <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18}]}>Ebook For You</Text>
+        <Text style={[styles.TextReadinBookView,{fontSize:13,letterSpacing:0,fontWeight:"300",marginTop:0}]}>Lorem Ipsum is simply dummy text of the printing </Text>
         <FlatList 
-          style={{marginTop:30}}
+          style={{marginTop:10, }}
           data={eBook}
           renderItem={({item}) =>(  
             <TouchableOpacity>
               <View style={{marginRight:10}}>
-                <Image source={{uri:item.img}} style={{width:120,height:190}}/>
-                <Text style={{fontSize:15,width:120 }}>{item.name}</Text>
+                <Image source={{uri:item.img}} style={styles.itemImageOfList}/>
+                <View style={styles.itemTextViewOfList}>
+                  <Text style={styles.itemTextsOfList}>{item.name}</Text>
+                  <Text style={styles.itemTextsOfList}>Rate : {item.rate} <AntDesignIcon name="star" size={14} color={COLORS.yellow} /> </Text>
+                  
+                </View>
               </View>      
             </TouchableOpacity>
            )}
            horizontal
            showsHorizontalScrollIndicator = {false} />
       </View>
-    </View>
+      <View style={ styles.bookList }>
+        <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18}]}>Fantasy Ebook</Text>
+        <Text style={[styles.TextReadinBookView,{fontSize:13,letterSpacing:0,fontWeight:"300",marginTop:0}]}>Lorem Ipsum is simply dummy text of the printing </Text>
+        <FlatList 
+          style={{marginTop:10, }}
+          data={eBook}
+          renderItem={({item}) =>(  
+            <TouchableOpacity>
+              <View style={{marginRight:10}}>
+                <Image source={{uri:item.img}} style={styles.itemImageOfList}/>
+                <View style={styles.itemTextViewOfList}>
+                  <Text style={styles.itemTextsOfList}>{item.name}</Text>
+                  <Text style={styles.itemTextsOfList}>Rate : {item.rate} <AntDesignIcon name="star" size={14} color={COLORS.yellow} /> </Text>
+                  
+                </View>
+              </View>      
+            </TouchableOpacity>
+           )}
+           horizontal
+           showsHorizontalScrollIndicator = {false} />
+      </View>
+
+      <View style={[styles.bookList,{marginBottom:30,marginTop:0}]}>
+        <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18}]}>Action Ebook</Text>
+        <Text style={[styles.TextReadinBookView,{fontSize:13,letterSpacing:0,fontWeight:"300",marginTop:0}]}>Lorem Ipsum is simply dummy text of the printing </Text>
+        <FlatList 
+          style={{marginTop:10, }}
+          data={eBook}
+          renderItem={({item}) =>(  
+            <TouchableOpacity>
+              <View style={{marginRight:10}}>
+                <Image source={{uri:item.img}} style={styles.itemImageOfList}/>
+                <View style={styles.itemTextViewOfList}>
+                  <Text style={styles.itemTextsOfList}>{item.name}</Text>
+                  <Text style={styles.itemTextsOfList}>Rate : {item.rate} <AntDesignIcon name="star" size={14} color={COLORS.yellow} /> </Text>
+                  
+                </View>
+              </View>      
+            </TouchableOpacity>
+           )}
+           horizontal
+           showsHorizontalScrollIndicator = {false} />
+      </View>
+    </ScrollView>
   )
 }
 
@@ -56,16 +105,28 @@ const styles = StyleSheet.create({
   },
   ReadinBookView :
   {
-    alignItems:'center',
-    marginTop:150,
+    alignSelf:'center',
+    marginTop:50,
+    paddingHorizontal:50,
+    paddingVertical:30, 
+    borderRadius:20,
+    backgroundColor:"#4955790A"
+  },
+  headerImageIcon :
+  {
+    alignSelf:'center',
+    opacity:0.75,
+    width:190,
+    height:130
   },
   TextReadinBookView :
   {
-    marginTop:25,
-    fontSize:20,
-    fontWeight:'500',
+    
+    marginTop:30,
+    fontSize:22,
+    fontWeight:'400',
     color:COLORS.darkBlue,
-    letterSpacing:1.5,
+    letterSpacing:3,
   },
   TextButtonReadinBookView:
   {
@@ -77,15 +138,40 @@ const styles = StyleSheet.create({
   ButtonReadinBookView :
   {
     backgroundColor:COLORS.lightBlue,
-    paddingHorizontal:22,
-    paddingVertical:12,
-    borderRadius:8,
-    marginTop:25,
+    paddingHorizontal:28,
+    paddingVertical:15,
+    borderRadius:5,
+    marginTop:20,
+    alignSelf:'center',
   },
   bookList :
   {
-    marginTop:25,marginLeft:20
-  } 
+    marginTop:10,
+    marginLeft:10,
+    
+  },
+  itemImageOfList : 
+  {
+    width:145,
+    height:220,
+    borderTopLeftRadius:5,
+    borderTopRightRadius:5
+  },
+  itemTextViewOfList :
+  {
+    width:145,
+    backgroundColor:"#ffffffE6",
+    paddingVertical:5,
+    borderBottomLeftRadius:5,
+    borderBottomRightRadius:5,
+    paddingHorizontal:8
+  },
+  itemTextsOfList :
+  {
+    fontSize:14,
+    fontWeight:'300' 
+  }
+ 
 });
 
 export default MyLibrary
