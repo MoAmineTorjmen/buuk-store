@@ -12,17 +12,17 @@ const LogScreen = () => {
             <View style={styles.logoButtonsContainer}>
                 <Image source={require("../assets/images/icons/logo.png")} style={styles.logoStyle}/>
                 <TouchableOpacity style={[styles.buttonsStyle,{marginTop:150}]}
-                    onPress={() => navigation.navigate("Home")}>
+                    onPress={() => navigation.navigate("MainContanier")}>
                     <Image source={require("../assets/images/icons/google-icon.png")} style={styles.iconsButtonStyle}/>
                     <Text style={styles.buttonsTextStyle}>Countinue with Google</Text>    
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonsStyle}
-                    onPress={() => navigation.navigate("Home")}>
+                    onPress={() => navigation.navigate("MainContanier")}>
                     <Image source={require("../assets/images/icons/facebook-icon.png")}  style={styles.iconsButtonStyle}/>
                     <Text style={styles.buttonsTextStyle}>Countinue with Facebook</Text>    
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{marginTop:20}}  onPress={() => navigation.navigate("Home")}>
+                <TouchableOpacity style={{marginTop:20}}  onPress={() => navigation.navigate("MainContanier")}>
                     <Text style={styles.skipButtonStyle}>SKIP</Text>    
                 </TouchableOpacity>
             </View> 
