@@ -5,23 +5,24 @@ import { View, Text,StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'; 
 import COLORS from '../assets/colors/pColors';
+import HomeScreen from './HomeScreen';
 
 
 const MainContanier = () => {
-    const myLibraryName = "My Library";
+    const homeName = "My Library";
     const myBookStore = "Book Store";
     
     const Tab = createBottomTabNavigator();
 
     return (
         <Tab.Navigator
-            initialRouteName={myLibraryName}
+            initialRouteName={homeName}
             screenOptions = {({route}) => ({
                 tabBarIcon : ({ focused,size,color }) => {
                     let iconName;
                     let routeName = route.name;
                     
-                    if (routeName === myLibraryName ) 
+                    if (routeName === homeName ) 
                     {
                         iconName  = focused ? "library" : "library-outline";
                          
@@ -32,14 +33,14 @@ const MainContanier = () => {
                     }
                     return  <Ionicons name={iconName} size={22} color={COLORS.lightBlue} style={{ fontWeight: '100'}} />  ;
                 },
-                tabBarStyle:  styles.tabBarStyle,
+                tabBarStyle:   styles.tabBarStyle,
                 tabBarLabelStyle :  styles.tabBarLabelStyle,
                  
             })}
             
             >
-            <Tab.Screen name={myLibraryName} component={MyLibrary} options={{headerShown:false}}/>
-            <Tab.Screen name={myBookStore}   component={BookStore} options={{headerShown:false}} />
+            <Tab.Screen name={homeName} component={HomeScreen} options={{headerShown:false}}/>
+            <Tab.Screen name={myBookStore}   component={BookStore} options={{headerShown:false}} /> 
         </Tab.Navigator>
        
         
@@ -52,7 +53,8 @@ const styles = StyleSheet.create({
         height:60, 
         borderRadius:10,
         paddingBottom:10,
-        paddingTop:10, 
+        paddingTop:10,
+        
     },
     tabBarLabelStyle:
     {
