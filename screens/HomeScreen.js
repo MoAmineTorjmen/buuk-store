@@ -1,4 +1,4 @@
-import { View, Text,StyleSheet } from 'react-native'
+import { View, Text,StyleSheet,StatusBar } from 'react-native'
 import React, { useState } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MyLibrary from './MyLibrary';
@@ -48,7 +48,7 @@ const HomeScreen = () => {
                 )
                 
                 }} />
-
+            
         </Tab.Navigator>
   )
 }
@@ -56,13 +56,14 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
     tabBarStyle :
     {
-        height:40, 
-        borderRadius:15, 
+        height:65, 
+      
+        borderRadius:10,
         position:'absolute',
-        top:70,
-        backgroundColor:"#ffffff",  
-        marginHorizontal:60,
-        elevation: 0
+        top:45, 
+        marginHorizontal:30,
+        paddingHorizontal:40,
+        backgroundColor:"#ffffffE6", 
     },
     tabBarLabelStyle:
     {
@@ -70,9 +71,9 @@ const styles = StyleSheet.create({
         fontWeight:'400',
         color: COLORS.lightBlue, 
         borderColor:COLORS.lightBlue,
-        height:"100%",
+        height:40,
         width:"100%",
-        borderRadius:15, 
+        borderRadius:10, 
         textAlignVertical:'center',
         textAlign:'center',   
         

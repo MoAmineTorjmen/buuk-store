@@ -41,11 +41,13 @@ const MyLibrary = () => {
     <ScrollView style={styles.Container}>
       <Image source={require("../assets/images/icons/APP_Background.png")} style={styles.backgroundImage} />
       <View style={styles.ReadinBookView}>
-        <Image source={require("../assets/images/icons/book-image-with-color.png")} style={styles.headerImageIcon} />
-        <Text style={styles.TextReadinBookView}>YOU DON'T HAVE A BOOK</Text>
-        <TouchableOpacity style={styles.ButtonReadinBookView}>
-          <Text style={styles.TextButtonReadinBookView}>SHOP NOW !</Text>
-        </TouchableOpacity>
+        <Image source={require("../assets/images/icons/tea-time-3240766_960_720.jpg")} style={styles.headerImageIcon} />
+        <View style={{position:'absolute',bottom:10,left:10}}> 
+          <Text style={[styles.TextReadinBookView,{color:"#fff",fontWeight:'800',backgroundColor:"#0000004D",paddingHorizontal:10,paddingVertical:10,borderRadius:5}]}>YOU DON'T HAVE A BOOK</Text>
+          <TouchableOpacity style={styles.ButtonReadinBookView}>
+            <Text style={styles.TextButtonReadinBookView}>SHOP NOW !!</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       
       <BookFlatListView/> 
@@ -69,16 +71,17 @@ const styles = StyleSheet.create({
   },
   ReadinBookView :
   {
-    alignSelf:'center',
-    marginTop:140, 
+    
+     
     borderRadius:20, 
   },
   headerImageIcon :
   {
     alignSelf:'center',
-    opacity:0.3,
-    width:180,
-    height:140
+    opacity:0.7,
+    width:"100%",
+    height:300,
+    
   },
   TextReadinBookView :
   {
@@ -91,20 +94,20 @@ const styles = StyleSheet.create({
   },
   TextButtonReadinBookView:
   {
-    fontWeight:'300',
-    color:COLORS.white,
-    fontSize:13,
+    fontWeight:'400',
+    color:"#fff",
+    textAlign:'center',
+    fontSize:15,
     letterSpacing:1
   },
   ButtonReadinBookView :
   {
     backgroundColor:COLORS.lightBlue,
-    paddingHorizontal:15,
-    paddingVertical:10,
+    paddingVertical:13,
     borderRadius:5,
-    marginTop:15,
+    marginTop:5,
     marginBottom:25,
-    alignSelf:'center',
+    width:150 
   },
   bookList :
   {
