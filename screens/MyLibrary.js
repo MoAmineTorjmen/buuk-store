@@ -1,9 +1,9 @@
 import { View, Text, Image,StyleSheet,TouchableOpacity,FlatList,ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import COLORS from '../assets/colors/pColors'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'; 
 import { useNavigation } from '@react-navigation/native';
-
+import sanityClient from "../sanity"
 
 const eBook =[ 
   {name : "Game Of Thrones ", rate : 4.9, img : "https://bdi.dlpdomain.com/album/9782205082944-couv.jpg"},
@@ -13,28 +13,62 @@ const eBook =[
   {name : "The Lost", rate : 3.5, img : "https://m.media-amazon.com/images/P/0545928117.01._SCLZZZZZZZ_SX500_.jpg"},
 ]
 const BookFlatListView = () => {
-  const navigation =useNavigation();
+  const navigation = useNavigation();
+  const [bookList,setBookList] = useState();
+
+  useEffect(()=> {
+    sanityClient.fetch(
+      `
+        *[_type == 'book' ]
+        {
+          ...,
+          categories[] -> {_id,title,color},
+          "ImageURL": mainImage.asset -> url,
+            author -> 
+            { 
+            _id ,
+            name,
+            "authorImageUrl" : image.asset -> url,
+            "descriptionhh" : description.children -> text
+            }
+      }
+      `
+    ).then(data => {
+      setBookList(data);
+    })
+  },[]);
+
   return (
     <View style={styles.bookList}>
         <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18}]}>Action Ebook</Text>
         <Text style={[styles.TextReadinBookView,{fontSize:13,letterSpacing:0,fontWeight:"300",marginTop:0}]}>Lorem Ipsum is simply dummy text of the printing </Text>
         <FlatList 
           style={{marginTop:10}}
-          data={eBook}
+          data={bookList}
           renderItem={({item}) =>(  
           
             <TouchableOpacity
               
                 onPress={() => navigation.push("BookDetail",{
-                  imageUrl : item.img,
+                  bookId:  item._id,
+                  imageUrl : item.ImageURL,
                   name : item.name,
-                  rate : item.rate
+                  rate : item.rating,
+                  price: item.price,
+                  authorId: item.author._id,
+                  authorName: item.author.name,
+                  authorImage: item.author.authorImageUrl,
+                  categories  : item.categories
+                  
+
+
+
                 })}>
               <View style={{marginRight:10}}>
-                <Image source={{uri:item.img}} style={styles.itemImageOfList}/>
+                <Image source={{uri:item.ImageURL}} style={styles.itemImageOfList}/>
                 <View style={styles.itemTextViewOfList}>
                   <Text style={styles.itemTextsOfList}>{item.name}</Text>
-                  <Text style={styles.itemTextsOfList}>Rate : {item.rate} <AntDesignIcon name="star" size={14} color={COLORS.yellow} /> </Text>
+                  <Text style={styles.itemTextsOfList}>Rate : {item.rating} <AntDesignIcon name="star" size={14} color={COLORS.yellow} /> </Text>
                 </View>
               </View>      
             </TouchableOpacity>

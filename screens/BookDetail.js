@@ -13,7 +13,7 @@ const eBook =[
     {name : "Harry Potter", rate : 4.2, img : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT99IrfJ3_BVvv08GQfE1GO0w7fXygEag5pblx5mb3ItWfmuUa4"},
     {name : "Lost", rate : 3.5, img : "https://m.media-amazon.com/images/P/0545928117.01._SCLZZZZZZZ_SX500_.jpg"},
   ]
-  const BookFlatListView = ( ) => {
+  const BookFlatListView = ({authorImage,authorName} ) => {
     return (
       <View style={styles.bookList}>
            <FlatList 
@@ -23,11 +23,11 @@ const eBook =[
               <View style={{flexDirection:'row'}}>
                 {index == 0 ?
                     <TouchableOpacity style={{ justifyContent:'center',marginRight:20,alignItems:'center'}}>
-                        <Image source={{uri:"https://scontent.ftun16-1.fna.fbcdn.net/v/t1.6435-9/70614842_2455294028130117_7224804963820503040_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=1clBQRkiBPkAX8mxs6R&_nc_ht=scontent.ftun16-1.fna&oh=00_AfBk9ZqR_5NWYQbSWTwsa9WDcSPlecc0jBH86GkGjR5OTg&oe=63D57CDB"}} 
+                        <Image source={{uri:authorImage}} 
                             style={{width:100,height:100,borderRadius:50,borderWidth:2,borderColor:COLORS.white}}/>
                          
                         <View style={{marginTop:10,}}>
-                            <Text  style={{color: COLORS.gray,fontSize:15,fontWeight:'600',letterSpacing:0.5,textAlign:'center'}}>MO Torjmen</Text>
+                            <Text  style={{color: COLORS.gray,fontSize:15,fontWeight:'600',letterSpacing:0.5,textAlign:'center'}}>{authorName}</Text>
                             <Text  style={{color: COLORS.gray,fontSize:10,fontWeight:'400',letterSpacing:0.5,textAlign:'center'}}>6425 Followers</Text>  
                         </View>
                     </TouchableOpacity>
@@ -75,20 +75,42 @@ const BookDetail = ({route}) => {
                 <View style={styles.bookDetailContainer}>
                     <Image source={{uri:data.imageUrl}} style={styles.imageBook} />
                     <Text  style={styles.bookTitle} >{data.name} </Text>
+                    <View style={{flexDirection:"row",width:"100%",justifyContent:'center'}}>
+                        {
+                            data.categories?.map( cat => (
+                                <TouchableOpacity> 
+                                    <Text 
+                                    style={{
+                                        backgroundColor:cat.color,
+                                        color:"white",
+                                        marginHorizontal:2.5,
+                                        paddingVertical:4,
+                                        paddingHorizontal:7,
+                                        borderRadius:5,
+                                        marginTop:10
+                                    }}
+                                    >{cat.title}</Text>
+                                    
+                                    
+                                </TouchableOpacity>
+                                
+                            ))
+                        }
+                    </View>
                     
-                    <View style={{flexDirection:'row',marginTop:5}}>
+                    <View style={{flexDirection:'row',marginTop:10}}>
                         <Text   >BY  </Text>
                         <TouchableOpacity>  
-                            <Text  style={{color: COLORS.lightBlue}}>MO Torjmen  </Text> 
+                            <Text  style={{color: COLORS.lightBlue}}>{data.authorName}</Text> 
                         </TouchableOpacity>
 
                     </View>
                     <View style={{marginTop:5}}>
-                        <Text style={styles.itemTextsOfList}> <AntDesignIcon name="star" size={15} color="#FFBF00"/>  {data.rate} </Text>
+                        <Text style={styles.itemTextsOfList}><AntDesignIcon name="star" size={15} color="#FFBF00"/>  {data.rate}.0 </Text>
                     </View>
                     <TouchableOpacity>
                         <View style={styles.buyBotton}>
-                            <Text style={[styles.textBuyBotton,{paddingHorizontal:25,borderBottomLeftRadius:20}]}>150.43 DT</Text>
+                            <Text style={[styles.textBuyBotton,{paddingHorizontal:25,borderBottomLeftRadius:20}]}>{data.price} DT</Text>
                             <Text style={[styles.textBuyBotton,{backgroundColor:COLORS.lightBlue,flex:1,borderTopRightRadius:10,borderBottomRightRadius:10}]}>GET NOW !!</Text>
                         </View>
                     </TouchableOpacity>
@@ -117,13 +139,13 @@ const BookDetail = ({route}) => {
                         <Text style={{fontSize:20,fontWeight:'700',marginBottom:5,marginTop:20,color:COLORS.darkBlue}}>Author</Text>
                         <Text style={{fontSize:14,fontWeight:'300',marginBottom:5,textAlign:'justify',lineHeight:18}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry</Text>
                         
-                        <BookFlatListView/> 
+                        <BookFlatListView authorImage={data.authorImage} authorName = {data.authorName}/> 
 
                     </View>
                     <View>
                         <Text style={{fontSize:20,fontWeight:'700',marginBottom:5,marginTop:20,color:COLORS.darkBlue}}>High Recommend</Text>
                         <View style={{flexDirection:"row",alignItems:'center'}}>
-                            <Text style={{fontSize:45,fontWeight:'500',color:COLORS.darkBlue}}>4.0</Text>
+                            <Text style={{fontSize:45,fontWeight:'500',color:COLORS.darkBlue}}>{data.rate}.0</Text>
                             <View style={{marginLeft:8,flex:1}}>
                                 <View style={{flexDirection:"row",}}>
                                     <AntDesignIcon name="star" size={18} color={COLORS.gray} />
