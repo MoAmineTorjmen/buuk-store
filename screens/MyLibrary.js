@@ -2,6 +2,7 @@ import { View, Text, Image,StyleSheet,TouchableOpacity,FlatList,ScrollView } fro
 import React, { useState } from 'react'
 import COLORS from '../assets/colors/pColors'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'; 
+import { useNavigation } from '@react-navigation/native';
 
 
 const eBook =[ 
@@ -9,9 +10,10 @@ const eBook =[
   {name : "The Witcher", rate : 4.2, img : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRrq6cRK12zrAuOlcUjC7auIPLMdvUJSlS0IzoYkaGF5mOYFim1"},
   {name : "Six of Crows", rate : 2.0, img : "https://cdn.cultura.com/cdn-cgi/image/width=768/media/pim/TITELIVE/63_9782017038375_1_75.jpg"},
   {name : "Harry Potter", rate : 4.2, img : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT99IrfJ3_BVvv08GQfE1GO0w7fXygEag5pblx5mb3ItWfmuUa4"},
-  {name : "Lost", rate : 3.5, img : "https://m.media-amazon.com/images/P/0545928117.01._SCLZZZZZZZ_SX500_.jpg"},
+  {name : "The Lost", rate : 3.5, img : "https://m.media-amazon.com/images/P/0545928117.01._SCLZZZZZZZ_SX500_.jpg"},
 ]
 const BookFlatListView = () => {
+  const navigation =useNavigation();
   return (
     <View style={styles.bookList}>
         <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18}]}>Action Ebook</Text>
@@ -20,7 +22,14 @@ const BookFlatListView = () => {
           style={{marginTop:10}}
           data={eBook}
           renderItem={({item}) =>(  
-            <TouchableOpacity>
+          
+            <TouchableOpacity
+              
+                onPress={() => navigation.push("BookDetail",{
+                  imageUrl : item.img,
+                  name : item.name,
+                  rate : item.rate
+                })}>
               <View style={{marginRight:10}}>
                 <Image source={{uri:item.img}} style={styles.itemImageOfList}/>
                 <View style={styles.itemTextViewOfList}>

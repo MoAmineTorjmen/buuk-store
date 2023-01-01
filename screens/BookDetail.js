@@ -1,12 +1,60 @@
-import { View, Text,StyleSheet,ScrollView,Image,TouchableOpacity } from 'react-native'
+import { View, Text,StyleSheet,ScrollView,Image,TouchableOpacity,FlatList } from 'react-native'
 import React from 'react'
 import COLORS from '../assets/colors/pColors'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'; 
 import Ionicons from 'react-native-vector-icons/Ionicons'; 
 import { useNavigation } from '@react-navigation/native';
 
-const BookDetail = () => {
-    const navigate = useNavigation()
+
+const eBook =[ 
+    {name : "Game Of Thrones ", rate : 4.9, img : "https://bdi.dlpdomain.com/album/9782205082944-couv.jpg"},
+    {name : "The Witcher", rate : 4.2, img : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRrq6cRK12zrAuOlcUjC7auIPLMdvUJSlS0IzoYkaGF5mOYFim1"},
+    {name : "Six of Crows", rate : 2.0, img : "https://cdn.cultura.com/cdn-cgi/image/width=768/media/pim/TITELIVE/63_9782017038375_1_75.jpg"},
+    {name : "Harry Potter", rate : 4.2, img : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT99IrfJ3_BVvv08GQfE1GO0w7fXygEag5pblx5mb3ItWfmuUa4"},
+    {name : "Lost", rate : 3.5, img : "https://m.media-amazon.com/images/P/0545928117.01._SCLZZZZZZZ_SX500_.jpg"},
+  ]
+  const BookFlatListView = ( ) => {
+    return (
+      <View style={styles.bookList}>
+           <FlatList 
+            style={{marginTop:10}}
+            data={eBook}
+            renderItem={({item,index}) =>(  
+              <View style={{flexDirection:'row'}}>
+                {index == 0 ?
+                    <TouchableOpacity style={{ justifyContent:'center',marginRight:20,alignItems:'center'}}>
+                        <Image source={{uri:"https://scontent.ftun16-1.fna.fbcdn.net/v/t1.6435-9/70614842_2455294028130117_7224804963820503040_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=1clBQRkiBPkAX8mxs6R&_nc_ht=scontent.ftun16-1.fna&oh=00_AfBk9ZqR_5NWYQbSWTwsa9WDcSPlecc0jBH86GkGjR5OTg&oe=63D57CDB"}} 
+                            style={{width:100,height:100,borderRadius:50,borderWidth:2,borderColor:COLORS.white}}/>
+                         
+                        <View style={{marginTop:10,}}>
+                            <Text  style={{color: COLORS.gray,fontSize:15,fontWeight:'600',letterSpacing:0.5,textAlign:'center'}}>MO Torjmen</Text>
+                            <Text  style={{color: COLORS.gray,fontSize:10,fontWeight:'400',letterSpacing:0.5,textAlign:'center'}}>6425 Followers</Text>  
+                        </View>
+                    </TouchableOpacity>
+                    :
+                    <View></View>
+                }
+                <TouchableOpacity>
+                    <View style={{marginRight:10}}>
+                    <Image source={{uri:item.img}} style={styles.itemImageOfList}/>
+                    <View style={styles.itemTextViewOfList}>
+                        <Text style={styles.itemTextsOfList}>{item.name}</Text>
+                        <Text style={styles.itemTextsOfList}>Rate : {item.rate} <AntDesignIcon name="star" size={14} color={COLORS.yellow} /> </Text>
+                    </View>
+                    </View>      
+                </TouchableOpacity>
+              </View>
+             )}
+             horizontal
+             showsHorizontalScrollIndicator = {false} />
+        </View>
+    )
+  }
+
+const BookDetail = ({route}) => {
+    const navigate = useNavigation();
+    let data = route.params;
+
   return (
     <View style={styles.Container} >
         <Image source={require("../assets/images/icons/APP_Background.png")} style={styles.backgroundImage} />
@@ -25,8 +73,8 @@ const BookDetail = () => {
                     <Text style={{fontSize:14,fontWeight:'500',marginLeft:10,color:COLORS.lightBlue}}>BACK</Text>
                 </TouchableOpacity>
                 <View style={styles.bookDetailContainer}>
-                    <Image source={{uri:"https://bdi.dlpdomain.com/album/9782205082944-couv.jpg"}} style={styles.imageBook} />
-                    <Text  style={styles.bookTitle} >Game Of Thrones The Song Of Ice And Fire </Text>
+                    <Image source={{uri:data.imageUrl}} style={styles.imageBook} />
+                    <Text  style={styles.bookTitle} >{data.name} </Text>
                     
                     <View style={{flexDirection:'row',marginTop:5}}>
                         <Text   >BY  </Text>
@@ -36,7 +84,7 @@ const BookDetail = () => {
 
                     </View>
                     <View style={{marginTop:5}}>
-                        <Text style={styles.itemTextsOfList}> <AntDesignIcon name="star" size={15} color="#FFBF00"/>  4.9 </Text>
+                        <Text style={styles.itemTextsOfList}> <AntDesignIcon name="star" size={15} color="#FFBF00"/>  {data.rate} </Text>
                     </View>
                     <TouchableOpacity>
                         <View style={styles.buyBotton}>
@@ -62,10 +110,55 @@ const BookDetail = () => {
                 </View>
                 <View style={styles.moreDetailsContainer}>
                     <View>
-                        <Text style={{fontSize:18,fontWeight:'500',marginBottom:5}}>Description</Text>
+                        <Text style={{fontSize:20,fontWeight:'700',marginBottom:5,color:COLORS.darkBlue}}>Description</Text>
                         <Text style={{fontSize:14,fontWeight:'400',marginBottom:5,textAlign:'justify',lineHeight:18}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</Text>
                     </View>
+                    <View>
+                        <Text style={{fontSize:20,fontWeight:'700',marginBottom:5,marginTop:20,color:COLORS.darkBlue}}>Author</Text>
+                        <Text style={{fontSize:14,fontWeight:'300',marginBottom:5,textAlign:'justify',lineHeight:18}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry</Text>
+                        
+                        <BookFlatListView/> 
 
+                    </View>
+                    <View>
+                        <Text style={{fontSize:20,fontWeight:'700',marginBottom:5,marginTop:20,color:COLORS.darkBlue}}>High Recommend</Text>
+                        <View style={{flexDirection:"row",alignItems:'center'}}>
+                            <Text style={{fontSize:45,fontWeight:'500',color:COLORS.darkBlue}}>4.0</Text>
+                            <View style={{marginLeft:8,flex:1}}>
+                                <View style={{flexDirection:"row",}}>
+                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
+                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
+                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
+                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
+                                    <AntDesignIcon name="staro" size={18} color={COLORS.gray} />
+                                </View>
+                                <Text  style={{fontSize:13,fontWeight:'500',color:COLORS.gray,marginTop:5 }}>(235,255 Rivewers)</Text>
+                            </View>
+                            <TouchableOpacity>
+                                <View style={{ backgroundColor:COLORS.lightBlue,justifyContent:'flex-end',  
+                                                width:100,
+                                                borderRadius:40}}>
+                                    <Text style={[styles.textBuyBotton,{paddingHorizontal:20,borderBottomLeftRadius:20,paddingVertical:10,fontSize:14}]}>Rivew</Text>
+                                    
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{backgroundColor:"#7895B21A",padding:15,borderRadius:10,marginTop:20}} >
+                            <View style={{flexDirection:'row'}}>
+                                <Text style={{flex:1,textAlign:'left' ,fontSize:15,fontWeight:'500',color:COLORS.darkBlue}}>Bill Gates</Text>
+                                <Text style={{flex:1,textAlign:'right' ,fontSize:15,fontWeight:'500',color:COLORS.gray}}>Dec 03,2018</Text>       
+                            </View>
+                            <View style={{flexDirection:"row",marginTop:5,alignItems:'center'}}>
+                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
+                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
+                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
+                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
+                                    <AntDesignIcon name="staro" size={18} color={COLORS.gray} />
+                                    <Text style={{marginLeft:10,fontSize:15,fontWeight:'500',color:COLORS.gray}}>It was Amazing</Text>       
+                                </View>
+                            <Text style={{marginTop:10,fontSize:14,fontWeight:'400',marginBottom:5,textAlign:'justify',lineHeight:18}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic  </Text>
+                        </View>
+                    </View>
 
                 </View>
             </ScrollView>
@@ -114,9 +207,9 @@ const styles = StyleSheet.create({
     },
     itemTextsOfList :
     {
-        fontSize:16,
+        fontSize:11,
         fontWeight:'400',
-        textAlign:'center'
+        textAlign:'left'
     },
     buyBotton :
     {
@@ -138,14 +231,36 @@ const styles = StyleSheet.create({
     },
     moreDetailsContainer :
     {
-        backgroundColor : COLORS.white,
+        backgroundColor : "#ffffff6A",
         flex:1,
-        borderRadius :20,
+        borderRadius :30,
         marginTop:25,
         paddingTop:25,
         paddingHorizontal:20,
         paddingBottom:20
-    }
+    },
+    bookList :
+  {
+    marginBottom:5,
+    marginLeft:10,
+    
+  },
+  itemImageOfList : 
+  {
+    width:140,
+    height:220,
+    borderTopLeftRadius:4,
+    borderTopRightRadius:4
+  },
+  itemTextViewOfList :
+  {
+    width:140,
+    backgroundColor:"#ffffffE6",
+    paddingVertical:5,
+    borderBottomLeftRadius:4,
+    borderBottomRightRadius:4,
+    paddingHorizontal:8,
+  },
 })
 
 export default BookDetail
