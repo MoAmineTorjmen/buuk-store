@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
            <FlatList 
             style={{marginTop:10}}
             data={allBook}
+            keyExtractor={(item) => item._id}
             renderItem={({item,index}) =>(  
               <View style={{flexDirection:'row'}}>
                 {index == 0 ?
@@ -37,6 +38,7 @@ import { useNavigation } from '@react-navigation/native';
                             name : item.name,
                             rate : item.rating,
                             price: item.price,
+                            bookDescription : item.description,
                             authorId: item.author._id,
                             authorName: item.author.name,
                             authorImage: item.author.authorImageUrl,
@@ -68,8 +70,7 @@ import { useNavigation } from '@react-navigation/native';
 const BookDetail = ({route}) => {
     const navigate = useNavigation();
     let data = route.params;
-    let allBookList = data.bookList;
-     
+    let allBookList = data.bookList; 
   return (
     <View style={styles.Container} >
         <Image source={require("../assets/images/icons/APP_Background.png")} style={styles.backgroundImage} />
@@ -150,7 +151,7 @@ const BookDetail = ({route}) => {
                 <View style={styles.moreDetailsContainer}>
                     <View>
                         <Text style={{fontSize:20,fontWeight:'700',marginBottom:5,color:COLORS.darkBlue}}>Description</Text>
-                        <Text style={{fontSize:14,fontWeight:'400',marginBottom:5,textAlign:'justify',lineHeight:18}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</Text>
+                        <Text style={{fontSize:14,fontWeight:'400',marginBottom:5,textAlign:'justify',lineHeight:18}}>{data.bookDescription}</Text>
                     </View>
                     <View>
                         <Text style={{fontSize:20,fontWeight:'700',marginBottom:5,marginTop:20,color:COLORS.darkBlue}}>Author</Text>

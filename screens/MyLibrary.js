@@ -1,4 +1,4 @@
-import { View, Text, Image,StyleSheet,TouchableOpacity,FlatList,ScrollView } from 'react-native'
+import { View, Text, Image,StyleSheet,TouchableOpacity,FlatList,ScrollView,TextInput} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import COLORS from '../assets/colors/pColors'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'; 
@@ -9,6 +9,7 @@ const BookFlatListView = () => {
   const navigation = useNavigation();
   const [bookList,setBookList] = useState();
 
+
   useEffect(()=> {
     sanityClient.fetch(
       `
@@ -17,21 +18,20 @@ const BookFlatListView = () => {
           ...,
           categories[] -> {_id,title},
           "ImageURL": mainImage.asset -> url,
-            author -> 
-            { 
+          author -> 
+          { 
             _id ,
             name,
-            "authorImageUrl" : image.asset -> url,
-            "descriptionhh" : description.children -> text
-            }
+            "authorImageUrl" : image.asset -> url, 
+          }
       }
       `
     ).then(data => {
       setBookList(data);
-    })
+    });
+    
   },[]);
-
-
+ 
   return (
     <View style={styles.bookList}>
         <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18}]}>Action Ebook</Text>
@@ -51,6 +51,7 @@ const BookFlatListView = () => {
                   rate : item.rating,
                   price: item.price,
                   authorId: item.author._id,
+                  bookDescription : item.description,
                   authorName: item.author.name,
                   authorImage: item.author.authorImageUrl,
                   categorie  : item.categories,
@@ -72,16 +73,55 @@ const BookFlatListView = () => {
 }
 
 const MyLibrary = () => {
+  const [categoryList,setCategoryList] = useState();
+  useEffect(()=> {
+     
+    sanityClient.fetch(
+      `
+      *[_type == 'category' ] { _id,title } 
+      `
+    ).then(data => {
+      setCategoryList(data);
+    })
+  },[]);
+
   return (
     <ScrollView style={styles.Container}>
       <Image source={require("../assets/images/icons/APP_Background.png")} style={styles.backgroundImage} />
-      <View style={styles.ReadinBookView}>
-        <Image source={require("../assets/images/icons/tea-time-3240766_960_720.jpg")} style={styles.headerImageIcon} />
-        <View style={{position:'absolute',bottom:10,left:10}}> 
-          <Text style={[styles.TextReadinBookView,{color:"#fff",fontWeight:'800',backgroundColor:"#0000004D",paddingHorizontal:10,paddingVertical:10,borderRadius:5}]}>YOU DON'T HAVE A BOOK</Text>
-          <TouchableOpacity style={styles.ButtonReadinBookView}>
-            <Text style={styles.TextButtonReadinBookView}>SHOP NOW !!</Text>
-          </TouchableOpacity>
+      <View style={{marginTop:110,}}>
+       
+        <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18,marginLeft:15,fontWeight:'500'}]}>Books Category</Text> 
+        <View style={{flexDirection:'row' ,alignItems:'center',marginLeft:15,marginTop:10,marginBottom :5}}>
+            <View  style={{backgroundColor:"white",width:50,height:50,justifyContent:'center',alignItems:'center',borderRadius:4, }}>
+              <AntDesignIcon name="search1" size={22} color="black" 
+              />
+            </View>
+            <TextInput 
+                placeholder='Find a book'
+                style={{
+                  backgroundColor:COLORS.white,
+                  color:COLORS.darkBlue,
+                  marginLeft:-5,
+                  width: 320 ,height:50,borderRadius:4,
+                  paddingLeft:10,
+                  fontSize:16,
+                 
+                }}/>
+
+        </View>
+        <View style={{marginTop:5,marginHorizontal:10 ,flexDirection:'row',flexWrap: 'wrap',flex:1,justifyContent:'flex-start'}}>
+        
+          {categoryList?.map(item => {
+            return (
+              <TouchableOpacity keyExtractor={(item) => item._id}>
+                <Text style={{backgroundColor:COLORS.lightBlue,fontSize:14,paddingHorizontal:10,paddingVertical:4,borderRadius:4,marginTop:5,marginHorizontal:5,color:"white",justifyContent:'flex-start'}}>{item.title}</Text>
+              </TouchableOpacity>
+            )
+          })
+          
+        }
+          
+          
         </View>
       </View>
       
@@ -104,12 +144,7 @@ const styles = StyleSheet.create({
       position:'absolute',
       opacity:0.5, 
   },
-  ReadinBookView :
-  {
-    
-     
-    borderRadius:20, 
-  },
+  
   headerImageIcon :
   {
     alignSelf:'center',
