@@ -5,20 +5,15 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons'; 
 import { useNavigation } from '@react-navigation/native';
 
-
-const eBook =[ 
-    {name : "Game Of Thrones ", rate : 4.9, img : "https://bdi.dlpdomain.com/album/9782205082944-couv.jpg"},
-    {name : "The Witcher", rate : 4.2, img : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRrq6cRK12zrAuOlcUjC7auIPLMdvUJSlS0IzoYkaGF5mOYFim1"},
-    {name : "Six of Crows", rate : 2.0, img : "https://cdn.cultura.com/cdn-cgi/image/width=768/media/pim/TITELIVE/63_9782017038375_1_75.jpg"},
-    {name : "Harry Potter", rate : 4.2, img : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT99IrfJ3_BVvv08GQfE1GO0w7fXygEag5pblx5mb3ItWfmuUa4"},
-    {name : "Lost", rate : 3.5, img : "https://m.media-amazon.com/images/P/0545928117.01._SCLZZZZZZZ_SX500_.jpg"},
-  ]
-  const BookFlatListView = ({authorImage,authorName} ) => {
+ 
+  const BookFlatListView = ({authorImage,authorName,authorID,thisBookID,allBook} ) => {
+    const navigation = useNavigation();
     return (
+        
       <View style={styles.bookList}>
            <FlatList 
             style={{marginTop:10}}
-            data={eBook}
+            data={allBook}
             renderItem={({item,index}) =>(  
               <View style={{flexDirection:'row'}}>
                 {index == 0 ?
@@ -34,15 +29,32 @@ const eBook =[
                     :
                     <View></View>
                 }
-                <TouchableOpacity>
-                    <View style={{marginRight:10}}>
-                    <Image source={{uri:item.img}} style={styles.itemImageOfList}/>
-                    <View style={styles.itemTextViewOfList}>
-                        <Text style={styles.itemTextsOfList}>{item.name}</Text>
-                        <Text style={styles.itemTextsOfList}>Rate : {item.rate} <AntDesignIcon name="star" size={14} color={COLORS.yellow} /> </Text>
-                    </View>
-                    </View>      
-                </TouchableOpacity>
+                {(item.author._id ==  authorID && item._id != thisBookID)? 
+                    <TouchableOpacity
+                            onPress={() => navigation.push("BookDetail",{
+                            bookId:  item._id,
+                            imageUrl : item.ImageURL,
+                            name : item.name,
+                            rate : item.rating,
+                            price: item.price,
+                            authorId: item.author._id,
+                            authorName: item.author.name,
+                            authorImage: item.author.authorImageUrl,
+                            categorie  : item.categories,
+                            bookList : allBook
+                            })}>
+                        <View style={{marginRight:10}}>
+                            <Image source={{uri:item.ImageURL}} style={styles.itemImageOfList}/>
+                            <View style={styles.itemTextViewOfList}>
+                                <Text style={styles.itemTextsOfList}>{item.name}</Text>
+                                <Text style={styles.itemTextsOfList}>Rate : { item.rating} <AntDesignIcon name="star" size={14} color={COLORS.yellow} /> </Text>
+                            </View>
+                        </View>      
+                    </TouchableOpacity>
+                     :
+                     <View></View>
+                }
+                
               </View>
              )}
              horizontal
@@ -51,10 +63,13 @@ const eBook =[
     )
   }
 
+ 
+
 const BookDetail = ({route}) => {
     const navigate = useNavigation();
     let data = route.params;
-
+    let allBookList = data.bookList;
+     
   return (
     <View style={styles.Container} >
         <Image source={require("../assets/images/icons/APP_Background.png")} style={styles.backgroundImage} />
@@ -68,7 +83,9 @@ const BookDetail = ({route}) => {
                     top:45,left:10,
                     paddingLeft:15, flexDirection : 'row',
                     justifyContent:'center',alignItems:'center'
-                }} onPress={()=> navigate.goBack()}>
+                }} 
+                onPress={()=> navigate.navigate("MainContanier")}>
+
                     <Ionicons name="arrow-back" size={22} color={COLORS.lightBlue}   /> 
                     <Text style={{fontSize:14,fontWeight:'500',marginLeft:10,color:COLORS.lightBlue}}>BACK</Text>
                 </TouchableOpacity>
@@ -77,11 +94,11 @@ const BookDetail = ({route}) => {
                     <Text  style={styles.bookTitle} >{data.name} </Text>
                     <View style={{flexDirection:"row",width:"100%",justifyContent:'center'}}>
                         {
-                            data.categories?.map( cat => (
+                            data.categorie?.map( cat => (
                                 <TouchableOpacity> 
                                     <Text 
                                     style={{
-                                        backgroundColor:cat.color,
+                                        backgroundColor: COLORS.lightBlue,
                                         color:"white",
                                         marginHorizontal:2.5,
                                         paddingVertical:4,
@@ -110,7 +127,7 @@ const BookDetail = ({route}) => {
                     </View>
                     <TouchableOpacity>
                         <View style={styles.buyBotton}>
-                            <Text style={[styles.textBuyBotton,{paddingHorizontal:25,borderBottomLeftRadius:20}]}>{data.price} DT</Text>
+                            <Text style={[styles.textBuyBotton,{paddingHorizontal:25,borderBottomLeftRadius:20}]}>{data.price}.000 DT</Text>
                             <Text style={[styles.textBuyBotton,{backgroundColor:COLORS.lightBlue,flex:1,borderTopRightRadius:10,borderBottomRightRadius:10}]}>GET NOW !!</Text>
                         </View>
                     </TouchableOpacity>
@@ -138,8 +155,8 @@ const BookDetail = ({route}) => {
                     <View>
                         <Text style={{fontSize:20,fontWeight:'700',marginBottom:5,marginTop:20,color:COLORS.darkBlue}}>Author</Text>
                         <Text style={{fontSize:14,fontWeight:'300',marginBottom:5,textAlign:'justify',lineHeight:18}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry</Text>
-                        
-                        <BookFlatListView authorImage={data.authorImage} authorName = {data.authorName}/> 
+                       
+                        <BookFlatListView authorImage={data.authorImage} authorName = {data.authorName} authorID = {data.authorId} thisBookID= {data.bookId} allBook = {allBookList} /> 
 
                     </View>
                     <View>
@@ -148,6 +165,9 @@ const BookDetail = ({route}) => {
                             <Text style={{fontSize:45,fontWeight:'500',color:COLORS.darkBlue}}>{data.rate}.0</Text>
                             <View style={{marginLeft:8,flex:1}}>
                                 <View style={{flexDirection:"row",}}>
+                                    {
+                                         
+                                    }
                                     <AntDesignIcon name="star" size={18} color={COLORS.gray} />
                                     <AntDesignIcon name="star" size={18} color={COLORS.gray} />
                                     <AntDesignIcon name="star" size={18} color={COLORS.gray} />

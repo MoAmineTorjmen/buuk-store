@@ -15,11 +15,6 @@ export default defineType({
       title: 'Description',
       type: 'text',
     }),
-    defineField({
-      name: 'color',
-      title: 'Color',
-      type: 'string',
-      description: "Color (HexCode please) "
-    }),  
+    
   ],
 })

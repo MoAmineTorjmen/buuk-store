@@ -5,13 +5,6 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import sanityClient from "../sanity"
 
-const eBook =[ 
-  {name : "Game Of Thrones ", rate : 4.9, img : "https://bdi.dlpdomain.com/album/9782205082944-couv.jpg"},
-  {name : "The Witcher", rate : 4.2, img : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRrq6cRK12zrAuOlcUjC7auIPLMdvUJSlS0IzoYkaGF5mOYFim1"},
-  {name : "Six of Crows", rate : 2.0, img : "https://cdn.cultura.com/cdn-cgi/image/width=768/media/pim/TITELIVE/63_9782017038375_1_75.jpg"},
-  {name : "Harry Potter", rate : 4.2, img : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT99IrfJ3_BVvv08GQfE1GO0w7fXygEag5pblx5mb3ItWfmuUa4"},
-  {name : "The Lost", rate : 3.5, img : "https://m.media-amazon.com/images/P/0545928117.01._SCLZZZZZZZ_SX500_.jpg"},
-]
 const BookFlatListView = () => {
   const navigation = useNavigation();
   const [bookList,setBookList] = useState();
@@ -22,7 +15,7 @@ const BookFlatListView = () => {
         *[_type == 'book' ]
         {
           ...,
-          categories[] -> {_id,title,color},
+          categories[] -> {_id,title},
           "ImageURL": mainImage.asset -> url,
             author -> 
             { 
@@ -38,6 +31,7 @@ const BookFlatListView = () => {
     })
   },[]);
 
+
   return (
     <View style={styles.bookList}>
         <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18}]}>Action Ebook</Text>
@@ -45,6 +39,7 @@ const BookFlatListView = () => {
         <FlatList 
           style={{marginTop:10}}
           data={bookList}
+          keyExtractor={(item) => item._id}
           renderItem={({item}) =>(  
           
             <TouchableOpacity
@@ -58,11 +53,8 @@ const BookFlatListView = () => {
                   authorId: item.author._id,
                   authorName: item.author.name,
                   authorImage: item.author.authorImageUrl,
-                  categories  : item.categories
-                  
-
-
-
+                  categorie  : item.categories,
+                  bookList : bookList
                 })}>
               <View style={{marginRight:10}}>
                 <Image source={{uri:item.ImageURL}} style={styles.itemImageOfList}/>
@@ -75,7 +67,7 @@ const BookFlatListView = () => {
            )}
            horizontal
            showsHorizontalScrollIndicator = {false} />
-      </View>
+      </View> 
   )
 }
 
