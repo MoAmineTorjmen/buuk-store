@@ -1,4 +1,4 @@
-import { View, Text,StyleSheet,ScrollView,Image,TouchableOpacity,FlatList } from 'react-native'
+import { View, Text,StyleSheet,ScrollView,Image,TouchableOpacity,FlatList,Dimensions } from 'react-native'
 import React from 'react'
 import COLORS from '../assets/colors/pColors'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'; 
@@ -18,15 +18,17 @@ import { useNavigation } from '@react-navigation/native';
             renderItem={({item,index}) =>(  
               <View style={{flexDirection:'row'}}>
                 {index == 0 ?
-                    <TouchableOpacity style={{ justifyContent:'center',marginRight:20,alignItems:'center'}}>
-                        <Image source={{uri:authorImage}} 
-                            style={{width:100,height:100,borderRadius:50,borderWidth:2,borderColor:COLORS.white}}/>
-                         
-                        <View style={{marginTop:10,}}>
-                            <Text  style={{color: COLORS.gray,fontSize:15,fontWeight:'600',letterSpacing:0.5,textAlign:'center'}}>{authorName}</Text>
-                            <Text  style={{color: COLORS.gray,fontSize:10,fontWeight:'400',letterSpacing:0.5,textAlign:'center'}}>6425 Followers</Text>  
-                        </View>
-                    </TouchableOpacity>
+                    <View >
+                        <TouchableOpacity style={{ justifyContent:'center',marginRight:20,alignItems:'center'}}>
+                            <Image source={{uri:authorImage}} 
+                                style={{width:100,height:100,borderRadius:50,borderWidth:2,borderColor:COLORS.white}}/>
+                            
+                            <View style={{marginTop:10,}}>
+                                <Text  style={{color: COLORS.gray,fontSize:15,fontWeight:'600',letterSpacing:0.5,textAlign:'center'}}>{authorName}</Text>
+                                <Text  style={{color: COLORS.gray,fontSize:10,fontWeight:'400',letterSpacing:0.5,textAlign:'center'}}>6425 Followers</Text>  
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                     :
                     <View></View>
                 }
@@ -45,7 +47,7 @@ import { useNavigation } from '@react-navigation/native';
                             categorie  : item.categories,
                             bookList : allBook
                             })}>
-                        <View style={{marginRight:10}}>
+                        <View style={{marginRight: 10}}>
                             <Image source={{uri:item.ImageURL}} style={styles.itemImageOfList}/>
                             <View style={styles.itemTextViewOfList}>
                                 <Text style={styles.itemTextsOfList}>{item.name}</Text>
@@ -65,12 +67,82 @@ import { useNavigation } from '@react-navigation/native';
     )
   }
 
+  const reviewList =  [
+    {
+        namePer : "Bill Gates" ,
+        date : "Dec 03,2018",
+        nbStarts : 5,
+        shortDescription : "It was Amazing",
+        details : "I thought this book was just okay. It was a quick and easy read, but the characters were somewhat one-dimensional. It was an okay way to pass the time, but I wouldn't go out of my way to recommend it."
+        
+    },
+     {
+         namePer : "Torjmen Mo " ,
+         date : "Jan 10,2020",
+         nbStarts : 2,
+         shortDescription : "Can be better story",
+         details : "I couldn't put this book down! The plot was engaging and the characters were well developed. I highly recommend it"
+      },
+      {
+          namePer : "Firas Ben Jeema " ,
+          date : "mars 10,2022",
+          nbStarts : 2,
+          shortDescription : "it's OK ",
+          details : "I absolutely loved this book! The characters were well developed and the plot kept me on the edge of my seat. I highly recommend it"
+       }
+      
+  ]
+  
+  const FeedBackListView = () => {
+
+    return (
+        <FlatList
+            data={reviewList}
+            renderItem={({item,index}) => 
+                    <View style={{backgroundColor:"#7895B21A",padding:15,borderRadius:10,marginTop:20, 
+                    width: Dimensions.get('window').width - 50 ,marginRight:10}} >
+                        <View style={{flexDirection:'row'}}>
+                            <Text style={{flex:1,textAlign:'left' ,fontSize:15,fontWeight:'500',color:COLORS.darkBlue}}>{item.namePer}</Text>
+                            <Text style={{flex:1,textAlign:'right' ,fontSize:15,fontWeight:'500',color:COLORS.gray}}>{item.date}</Text>       
+                        </View>
+                        <View style={{flexDirection:"row",marginTop:5,alignItems:'center'}}>
+
+                            {
+                                
+                                
+                                Array.from({length: item.nbStarts}, (x, i) => {
+                                    return(
+                                        <AntDesignIcon key={i} name="star" size={18} color={COLORS.gray} />
+                                        )
+                                    })
+                            }
+                             {
+                                            Array.from({length: 5-item.nbStarts}, (x, i) => {
+                                                return(
+                                                    <AntDesignIcon key={i}  name="staro" size={18} color={COLORS.gray} />
+                                                )
+                                            })
+                                   }
+                                
+                                <Text style={{marginLeft:10,fontSize:15,fontWeight:'500',color:COLORS.gray}}>{item.shortDescription}</Text>       
+                        </View>
+                        <Text style={{marginTop:10,paddingHorizontal:0,fontSize:14,fontWeight:'300',marginBottom:5,textAlign:'left',lineHeight:20}}>{item.details} </Text>
+                    </View>
+            }
+            pagingEnabled={true} 
+            horizontal
+            showsHorizontalScrollIndicator ={false}
+            />
+    )
+  }
  
 
 const BookDetail = ({route}) => {
     const navigate = useNavigation();
     let data = route.params;
     let allBookList = data.bookList; 
+    const totalStars = 5;
+    const gainedStars = data.rate;
   return (
     <View style={styles.Container} >
         <Image source={require("../assets/images/icons/APP_Background.png")} style={styles.backgroundImage} />
@@ -151,11 +223,11 @@ const BookDetail = ({route}) => {
                 <View style={styles.moreDetailsContainer}>
                     <View>
                         <Text style={{fontSize:20,fontWeight:'700',marginBottom:5,color:COLORS.darkBlue}}>Description</Text>
-                        <Text style={{fontSize:14,fontWeight:'400',marginBottom:5,textAlign:'justify',lineHeight:18}}>{data.bookDescription}</Text>
+                        <Text style={{fontSize:14,fontWeight:'300',marginBottom:5,textAlign:'justify',lineHeight:18}}>{data.bookDescription}</Text>
                     </View>
                     <View>
                         <Text style={{fontSize:20,fontWeight:'700',marginBottom:5,marginTop:20,color:COLORS.darkBlue}}>Author</Text>
-                        <Text style={{fontSize:14,fontWeight:'300',marginBottom:5,textAlign:'justify',lineHeight:18}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry</Text>
+                        <Text style={{fontSize:14,fontWeight:'300',marginBottom:5,textAlign:'justify',lineHeight:18}}>{data.AuthorDescription}</Text>
                        
                         <BookFlatListView authorImage={data.authorImage} authorName = {data.authorName} authorID = {data.authorId} thisBookID= {data.bookId} allBook = {allBookList} /> 
 
@@ -167,13 +239,22 @@ const BookDetail = ({route}) => {
                             <View style={{marginLeft:8,flex:1}}>
                                 <View style={{flexDirection:"row",}}>
                                     {
-                                         
-                                    }
-                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
-                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
-                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
-                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
-                                    <AntDesignIcon name="staro" size={18} color={COLORS.gray} />
+                                          Array.from({length: gainedStars}, (x, i) => {
+                                            return(
+                                                <AntDesignIcon key={i}  name="star" size={18} color={COLORS.gray} />
+                                            )
+                                           })
+                                   
+                                   }
+                                   {
+                                            Array.from({length: totalStars-gainedStars}, (x, i) => {
+                                                return(
+                                                    <AntDesignIcon key={i}  name="staro" size={18} color={COLORS.gray} />
+                                                )
+                                            })
+                                   }
+                                    
+                                   
                                 </View>
                                 <Text  style={{fontSize:13,fontWeight:'500',color:COLORS.gray,marginTop:5 }}>(235,255 Rivewers)</Text>
                             </View>
@@ -186,21 +267,16 @@ const BookDetail = ({route}) => {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <View style={{backgroundColor:"#7895B21A",padding:15,borderRadius:10,marginTop:20}} >
-                            <View style={{flexDirection:'row'}}>
-                                <Text style={{flex:1,textAlign:'left' ,fontSize:15,fontWeight:'500',color:COLORS.darkBlue}}>Bill Gates</Text>
-                                <Text style={{flex:1,textAlign:'right' ,fontSize:15,fontWeight:'500',color:COLORS.gray}}>Dec 03,2018</Text>       
-                            </View>
-                            <View style={{flexDirection:"row",marginTop:5,alignItems:'center'}}>
-                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
-                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
-                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
-                                    <AntDesignIcon name="star" size={18} color={COLORS.gray} />
-                                    <AntDesignIcon name="staro" size={18} color={COLORS.gray} />
-                                    <Text style={{marginLeft:10,fontSize:15,fontWeight:'500',color:COLORS.gray}}>It was Amazing</Text>       
-                                </View>
-                            <Text style={{marginTop:10,fontSize:14,fontWeight:'400',marginBottom:5,textAlign:'justify',lineHeight:18}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic  </Text>
-                        </View>
+                        
+                        <View style= {{flex : 1,}}>
+                            
+                                   <FeedBackListView/>
+                            </View>            
+
+                                 
+
+
+
                     </View>
 
                 </View>

@@ -22,6 +22,7 @@ const BookFlatListView = () => {
           { 
             _id ,
             name,
+            description,
             "authorImageUrl" : image.asset -> url, 
           }
       }
@@ -54,6 +55,7 @@ const BookFlatListView = () => {
                   bookDescription : item.description,
                   authorName: item.author.name,
                   authorImage: item.author.authorImageUrl,
+                  AuthorDescription : item.author.description,
                   categorie  : item.categories,
                   bookList : bookList
                 })}>
