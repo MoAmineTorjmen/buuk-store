@@ -18,8 +18,8 @@ import { useNavigation } from '@react-navigation/native';
             renderItem={({item,index}) =>(  
               <View style={{flexDirection:'row'}}>
                 {index == 0 ?
-                    <View >
-                        <TouchableOpacity style={{ justifyContent:'center',marginRight:20,alignItems:'center'}}>
+                     
+                        <TouchableOpacity style={{alignItems:'center',alignSelf:'center',marginRight:10}}>
                             <Image source={{uri:authorImage}} 
                                 style={{width:100,height:100,borderRadius:50,borderWidth:2,borderColor:COLORS.white}}/>
                             
@@ -28,7 +28,7 @@ import { useNavigation } from '@react-navigation/native';
                                 <Text  style={{color: COLORS.gray,fontSize:10,fontWeight:'400',letterSpacing:0.5,textAlign:'center'}}>6425 Followers</Text>  
                             </View>
                         </TouchableOpacity>
-                    </View>
+                 
                     :
                     <View></View>
                 }
@@ -47,11 +47,27 @@ import { useNavigation } from '@react-navigation/native';
                             categorie  : item.categories,
                             bookList : allBook
                             })}>
-                        <View style={{marginRight: 10}}>
+                        <View style={{marginLeft: 10}}>
                             <Image source={{uri:item.ImageURL}} style={styles.itemImageOfList}/>
                             <View style={styles.itemTextViewOfList}>
                                 <Text style={styles.itemTextsOfList}>{item.name}</Text>
-                                <Text style={styles.itemTextsOfList}>Rate : { item.rating} <AntDesignIcon name="star" size={14} color={COLORS.yellow} /> </Text>
+                                <View style={{flexDirection:'row',marginTop:5,}}>
+                                    {
+                                            Array.from({length: item.rating}, (x, i) => {
+                                                return(
+                                                    <AntDesignIcon n key={i}  name="star" size={14} color={COLORS.yellow} />
+                                                )
+                                            })
+                                    
+                                    }
+                                    {
+                                                Array.from({length: 5-item.rating}, (x, i) => {
+                                                    return(
+                                                        <AntDesignIcon key={i}  name="staro" size={14} color={COLORS.yellow} />
+                                                    )
+                                                })
+                                    }
+                                </View> 
                             </View>
                         </View>      
                     </TouchableOpacity>
@@ -353,7 +369,7 @@ const styles = StyleSheet.create({
         backgroundColor : "#ffffff6A",
         flex:1,
         borderRadius :30,
-        marginTop:25,
+        marginTop:10,
         paddingTop:25,
         paddingHorizontal:20,
         paddingBottom:20

@@ -90,9 +90,9 @@ const MyLibrary = () => {
   return (
     <ScrollView style={styles.Container}>
       <Image source={require("../assets/images/icons/APP_Background.png")} style={styles.backgroundImage} />
-      <View style={{marginTop:110,}}>
+      <View style={{marginTop:120,}}>
        
-        <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18,marginLeft:15,fontWeight:'500'}]}>Books Category</Text> 
+        <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:20,marginLeft:15,fontWeight:'600',letterSpacing:2}]}>Books Category</Text> 
         <View style={{flexDirection:'row' ,alignItems:'center',marginLeft:15,marginTop:10,marginBottom :5}}>
             <View  style={{backgroundColor:"white",width:50,height:50,justifyContent:'center',alignItems:'center',borderRadius:4, }}>
               <AntDesignIcon name="search1" size={22} color="black" 
