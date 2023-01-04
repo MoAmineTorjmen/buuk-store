@@ -51,11 +51,11 @@ import { useNavigation } from '@react-navigation/native';
                             <Image source={{uri:item.ImageURL}} style={styles.itemImageOfList}/>
                             <View style={styles.itemTextViewOfList}>
                                 <Text style={styles.itemTextsOfList}>{item.name}</Text>
-                                <View style={{flexDirection:'row',marginTop:5,}}>
+                                <View style={{flexDirection:'row',marginTop:5,width:80,justifyContent:'space-between'}}>
                                     {
                                             Array.from({length: item.rating}, (x, i) => {
                                                 return(
-                                                    <AntDesignIcon n key={i}  name="star" size={14} color={COLORS.yellow} />
+                                                    <AntDesignIcon n key={i}  name="star" size={14} color={COLORS.lightBlue} />
                                                 )
                                             })
                                     
@@ -63,7 +63,7 @@ import { useNavigation } from '@react-navigation/native';
                                     {
                                                 Array.from({length: 5-item.rating}, (x, i) => {
                                                     return(
-                                                        <AntDesignIcon key={i}  name="staro" size={14} color={COLORS.yellow} />
+                                                        <AntDesignIcon key={i}  name="staro" size={14} color={COLORS.lightBlue} />
                                                     )
                                                 })
                                     }
@@ -166,7 +166,7 @@ const BookDetail = ({route}) => {
                 <TouchableOpacity style={{
                     backgroundColor: "#ffffffE6",
                     position:'absolute',
-                    paddingHorizontal:30,
+                    paddingHorizontal:20,
                     paddingVertical:10, 
                     borderRadius:50,
                     top:45,left:10,
@@ -184,7 +184,7 @@ const BookDetail = ({route}) => {
                     <View style={{flexDirection:"row",width:"100%",justifyContent:'center'}}>
                         {
                             data.categorie?.map( cat => (
-                                <TouchableOpacity> 
+                                <TouchableOpacity key ={cat._id}> 
                                     <Text 
                                     style={{
                                         backgroundColor: COLORS.lightBlue,

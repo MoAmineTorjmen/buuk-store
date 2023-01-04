@@ -35,7 +35,7 @@ const BookFlatListView = () => {
  
   return (
     <View style={styles.bookList}>
-        <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18}]}>Action Ebook</Text>
+        <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18,fontWeight:'400',letterSpacing:2}]}>Action BUUKS</Text> 
         <Text style={[styles.TextReadinBookView,{fontSize:13,letterSpacing:0,fontWeight:"300",marginTop:0}]}>Lorem Ipsum is simply dummy text of the printing </Text>
         <FlatList 
           style={{marginTop:10}}
@@ -63,8 +63,25 @@ const BookFlatListView = () => {
                 <Image source={{uri:item.ImageURL}} style={styles.itemImageOfList}/>
                 <View style={styles.itemTextViewOfList}>
                   <Text style={styles.itemTextsOfList}>{item.name}</Text>
-                  <Text style={styles.itemTextsOfList}>Rate : {item.rating} <AntDesignIcon name="star" size={14} color={COLORS.yellow} /> </Text>
-                </View>
+                    <View style={{flexDirection:'row',marginTop:5,width:80,justifyContent:'space-between'}}>
+                   
+                        {
+                          Array.from({length: item.rating}, (x, i) => {
+                              return(
+                                  <AntDesignIcon n key={i}  name="star" size={12} color={COLORS.lightBlue} />
+                              )
+                          })
+                        
+                        }
+                        {
+                          Array.from({length: 5-item.rating}, (x, i) => {
+                              return(
+                                  <AntDesignIcon key={i}  name="staro" size={12} color={COLORS.lightBlue} />
+                              )
+                          })
+                        }
+                    </View> 
+                  </View>
               </View>      
             </TouchableOpacity>
            )}
@@ -90,41 +107,43 @@ const MyLibrary = () => {
   return (
     <ScrollView style={styles.Container}>
       <Image source={require("../assets/images/icons/APP_Background.png")} style={styles.backgroundImage} />
-      <View style={{marginTop:120,}}>
-       
-        <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:20,marginLeft:15,fontWeight:'600',letterSpacing:2}]}>Books Category</Text> 
-        <View style={{flexDirection:'row' ,alignItems:'center',marginLeft:15,marginTop:10,marginBottom :5}}>
-            <View  style={{backgroundColor:"white",width:50,height:50,justifyContent:'center',alignItems:'center',borderRadius:4, }}>
-              <AntDesignIcon name="search1" size={22} color="black" 
+      <View style={{marginTop:30}}>
+      <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18,marginLeft:17,fontWeight:'400',letterSpacing:2}]}>BUUKS Category</Text>          
+        <View style={{flexDirection:'row' ,alignItems:'center',marginTop:10, marginLeft:15,marginRight:15}}>
+            <View  style={{width:45,height:45,justifyContent:'center',alignItems:'center',borderTopLeftRadius:40,
+                  borderBottomLeftRadius:40,position:'absolute',zIndex:99}}>
+              <AntDesignIcon name="search1" size={17} color= {COLORS.gray} 
               />
             </View>
             <TextInput 
                 placeholder='Find a book'
                 style={{
+                 
                   backgroundColor:COLORS.white,
-                  color:COLORS.darkBlue,
-                  marginLeft:-5,
-                  width: 320 ,height:50,borderRadius:4,
-                  paddingLeft:10,
-                  fontSize:16,
+                  color:COLORS.darkBlue, 
+                  width:"100%",
+                  height:45,
+                  borderRadius:5,
+                  paddingLeft:40,
+                  fontSize:14,
+                  
                  
                 }}/>
 
         </View>
-        <View style={{marginTop:5,marginHorizontal:10 ,flexDirection:'row',flexWrap: 'wrap',flex:1,justifyContent:'flex-start'}}>
-        
-          {categoryList?.map(item => {
-            return (
-              <TouchableOpacity keyExtractor={(item) => item._id}>
-                <Text style={{backgroundColor:COLORS.lightBlue,fontSize:14,paddingHorizontal:10,paddingVertical:4,borderRadius:4,marginTop:5,marginHorizontal:5,color:"white",justifyContent:'flex-start'}}>{item.title}</Text>
-              </TouchableOpacity>
-            )
-          })
-          
-        }
-          
-          
+
+        <View style={{marginTop:10,marginHorizontal:10 ,flexDirection:'row',flexWrap: 'wrap',flex:1,justifyContent:'space-between',}}>
+            {
+              categoryList?.map(item => {
+                return (
+                  <TouchableOpacity key={ item._id}>
+                    <Text style={{backgroundColor:COLORS.lightBlue,fontSize:12,paddingHorizontal:10,paddingVertical:4,borderRadius:4,marginTop:5,marginHorizontal:5,color:"white",justifyContent:'flex-start'}}>{item.title}</Text>
+                  </TouchableOpacity>
+                )
+              })
+            }
         </View>
+       
       </View>
       
       <BookFlatListView/> 
@@ -183,7 +202,7 @@ const styles = StyleSheet.create({
   },
   bookList :
   {
-    marginBottom:5,
+    marginBottom:0,
     marginLeft:10,
     
   },
@@ -205,8 +224,8 @@ const styles = StyleSheet.create({
   },
   itemTextsOfList :
   {
-    fontSize:14,
-    fontWeight:'300' 
+    fontSize:11,
+    fontWeight:'400' 
   }
  
 });
