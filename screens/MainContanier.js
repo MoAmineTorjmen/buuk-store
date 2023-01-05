@@ -1,5 +1,5 @@
 import React from 'react'
-import MyLibrary from './MyLibrary';
+import HomeTab from './HomeTab';
 import BookStore from './BookStore';
 import BuyLaterBook from './BuyLaterBook';
 import { View, Text,StyleSheet } from 'react-native'
@@ -10,7 +10,7 @@ import COLORS from '../assets/colors/pColors';
 
 
 const MainContanier = () => {
-    const myLibrary = "My Library";
+    const myHome = "Home";
     const myBookStore = "Book Store";
     const myBuyLater = "Buy Later";
 
@@ -18,13 +18,13 @@ const MainContanier = () => {
 
     return (
         <Tab.Navigator
-            initialRouteName={myLibrary}
+            initialRouteName={myHome}
             screenOptions = {({route}) => ({
                 tabBarIcon : ({ focused,size,color }) => {
                     let iconName;
                     let routeName = route.name;
                     
-                    if (routeName === myLibrary ) 
+                    if (routeName === myHome ) 
                     {
                         iconName  = focused ? "library" : "library-outline";
                          
@@ -46,7 +46,7 @@ const MainContanier = () => {
             })}
             
             >
-            <Tab.Screen name={myLibrary}        component={MyLibrary}       options={{headerShown:false}}/>
+            <Tab.Screen name={myHome}           component={HomeTab}         options={{headerShown:false}}/>
             <Tab.Screen name={myBookStore}      component={BookStore}       options={{headerShown:false}} />
             <Tab.Screen name={myBuyLater}       component={BuyLaterBook}    options={{headerShown:false}} /> 
         </Tab.Navigator>
