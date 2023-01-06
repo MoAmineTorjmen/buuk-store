@@ -11,8 +11,8 @@ import { useNavigation } from '@react-navigation/native';
     return (
         
       <View style={styles.bookList}>
-           <FlatList 
-            style={{marginTop:10}}
+           <FlatList  
+           style={{marginTop:10}}
             data={allBook}
             keyExtractor={(item) => item._id}
             renderItem={({item,index}) =>(  
@@ -21,10 +21,10 @@ import { useNavigation } from '@react-navigation/native';
                      
                         <TouchableOpacity style={{alignItems:'center',alignSelf:'center',marginRight:10}}>
                             <Image source={{uri:authorImage}} 
-                                style={{width:100,height:100,borderRadius:50,borderWidth:2,borderColor:COLORS.white}}/>
+                                style={{width:120,height:120,borderRadius:50,borderWidth:0.5,borderColor:COLORS.gray}}/>
                             
                             <View style={{marginTop:10,}}>
-                                <Text  style={{color: COLORS.gray,fontSize:15,fontWeight:'600',letterSpacing:0.5,textAlign:'center'}}>{authorName}</Text>
+                                <Text  style={{color: COLORS.darkBlue,fontSize:17,fontWeight:'600',letterSpacing:0.5,textAlign:'center'}}>{authorName}</Text>
                                 <Text  style={{color: COLORS.gray,fontSize:10,fontWeight:'400',letterSpacing:0.5,textAlign:'center'}}>6425 Followers</Text>  
                             </View>
                         </TouchableOpacity>
@@ -113,6 +113,7 @@ import { useNavigation } from '@react-navigation/native';
 
     return (
         <FlatList
+        style={{ paddingBottom:10}}
             data={reviewList}
             renderItem={({item,index}) => 
                     <View style={{backgroundColor:"#7895B21A",padding:15,borderRadius:10,marginTop:20, 
@@ -162,9 +163,9 @@ const BookDetail = ({route}) => {
   return (
     <View style={styles.Container} >
         <Image source={require("../assets/images/icons/APP_Background.png")} style={styles.backgroundImage} />
-            <ScrollView>
+            <ScrollView >
                 <TouchableOpacity style={{
-                    backgroundColor: "#ffffffE6",
+                    backgroundColor: "#ffffffCC",
                     position:'absolute',
                     paddingHorizontal:20,
                     paddingVertical:10, 
@@ -175,8 +176,8 @@ const BookDetail = ({route}) => {
                 }} 
                 onPress={()=> navigate.navigate("MainContanier")}>
 
-                    <Ionicons name="arrow-back" size={22} color={COLORS.lightBlue}   /> 
-                    <Text style={{fontSize:14,fontWeight:'500',marginLeft:10,color:COLORS.lightBlue}}>BACK</Text>
+                    <Ionicons name="arrow-back" size={20} color={COLORS.lightBlue}   /> 
+                    <Text style={{fontSize:14,fontWeight:'500',marginLeft:10,color:COLORS.lightBlue,marginTop:-2}}>BACK GO HOME</Text>
                 </TouchableOpacity>
                 <View style={styles.bookDetailContainer}>
                     <Image source={{uri:data.imageUrl}} style={styles.imageBook} />
@@ -305,7 +306,8 @@ const BookDetail = ({route}) => {
 const styles = StyleSheet.create({
     Container :
     {
-      flex:1,  
+      flex:1,
+      
     },
     backgroundImage:
     {

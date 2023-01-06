@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import COLORS from '../assets/colors/pColors'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'; 
 import { useNavigation } from '@react-navigation/native';
-import sanityClient from "../sanity"
+import sanityClient from "../sanity" 
 
 const BookFlatListView = () => {
   const navigation = useNavigation();
@@ -35,7 +35,7 @@ const BookFlatListView = () => {
  
   return (
     <View style={styles.bookList}>
-        <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18,fontWeight:'400',letterSpacing:2}]}>Action BUUKS</Text> 
+        <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18,fontWeight:'400',letterSpacing:2}]}>BUUKS FOR YOU !!</Text> 
         <Text style={[styles.TextReadinBookView,{fontSize:13,letterSpacing:0,fontWeight:"300",marginTop:0}]}>Lorem Ipsum is simply dummy text of the printing </Text>
         <FlatList 
           style={{marginTop:10}}
@@ -90,6 +90,60 @@ const BookFlatListView = () => {
       </View> 
   )
 }
+
+
+const AuthorFlatListView = () => {
+  const [authorList,setAuthorList] = useState([]);
+  
+  useEffect(()=>{
+    sanityClient.fetch(
+      `
+      *[_type == 'author'  ]
+        {
+          _id, 
+          name,
+          "imageUrl" : image.asset -> url,
+          description
+        }
+      `
+    ).then(data => {
+      setAuthorList(data)
+      
+    })
+  },[]); 
+
+  return (
+    <View style={{marginTop:5,marginLeft:10,paddingBottom:20}}>
+        <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18,fontWeight:'400',letterSpacing:2}]}>AUTHORS FOR YOU !!</Text> 
+        <Text style={[styles.TextReadinBookView,{fontSize:13,letterSpacing:0,fontWeight:"300",marginTop:0}]}>Lorem Ipsum is simply dummy text of the printing </Text>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style ={{marginTop:5 }}
+          contentContainerStyle={{justifyContent:'space-between'}}
+          data={authorList}
+          keyExtractor ={(item) => item._id}
+          renderItem={({item}) => (
+              <TouchableOpacity>
+                  <View style={{paddingVertical:10,paddingHorizontal:10,justifyContent:'center',alignItems:'center'}} >
+                      <Image source={{uri:item.imageUrl}}
+                             style={{
+                                width:100,
+                                height:100,
+                                borderRadius:40,
+                                borderWidth:0.5,borderColor:COLORS.gray
+                             }}/>
+                           <Text  style={{color: COLORS.darkBlue,fontSize:15,fontWeight:'600',textAlign:'center',marginTop:5}}>{item.name}</Text>
+                          <Text  style={{color: COLORS.gray,fontSize:10,fontWeight:'400',letterSpacing:0.5}}>6425 Followers</Text>  
+                            
+                  </View>
+              </TouchableOpacity>
+          )}/>
+    </View>
+  )
+
+}
+
 
 const MyLibrary = () => {
   const [categoryList,setCategoryList] = useState();
@@ -147,7 +201,7 @@ const MyLibrary = () => {
       </View>
       
       <BookFlatListView/> 
-      <BookFlatListView /> 
+      <AuthorFlatListView /> 
       
     </ScrollView>
   )
@@ -157,6 +211,7 @@ const styles = StyleSheet.create({
   Container :
   {
     flex:1,
+    
   },
   backgroundImage:
   {
