@@ -1,4 +1,4 @@
-import { View, Text, Image,StyleSheet,TouchableOpacity,FlatList,ScrollView,TextInput} from 'react-native'
+import { View, Text, Image,StyleSheet,TouchableOpacity,FlatList,ScrollView,TextInput,ActivityIndicator} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import COLORS from '../assets/colors/pColors'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'; 
@@ -94,7 +94,7 @@ const BookFlatListView = () => {
 
 const AuthorFlatListView = () => {
   const [authorList,setAuthorList] = useState([]);
-  
+  const navigate = useNavigation();
   useEffect(()=>{
     sanityClient.fetch(
       `
@@ -124,7 +124,15 @@ const AuthorFlatListView = () => {
           data={authorList}
           keyExtractor ={(item) => item._id}
           renderItem={({item}) => (
-              <TouchableOpacity>
+              <TouchableOpacity 
+                  onPress={()=> navigate.navigate("AuthorDetails",{
+                      authorID : item._id,
+                      authorName : item.name,
+                      authorImage : item.imageUrl,
+                      authorDescription : item.description
+           
+           
+                  })}>
                   <View style={{paddingVertical:10,paddingHorizontal:10,justifyContent:'center',alignItems:'center'}} >
                       <Image source={{uri:item.imageUrl}}
                              style={{
@@ -158,6 +166,7 @@ const MyLibrary = () => {
     })
   },[]);
 
+ 
   return (
     <ScrollView style={styles.Container}>
       <Image source={require("../assets/images/icons/APP_Background.png")} style={styles.backgroundImage} />
