@@ -23,7 +23,7 @@ const BookFlatListView = () => {
             _id ,
             name,
             description,
-            "authorImageUrl" : image.asset -> url, 
+            "authorImageUrl" : image.asset -> url,
           }
       }
       `
@@ -103,7 +103,13 @@ const AuthorFlatListView = () => {
           _id, 
           name,
           "imageUrl" : image.asset -> url,
-          description
+          description,
+          "relatedBooks": *[_type=='book' && references(^._id)]
+          {  
+            ...,
+            "ImageURL" : mainImage.asset -> url,
+            categories[] -> {_id,title},
+          }    
         }
       `
     ).then(data => {
@@ -111,7 +117,8 @@ const AuthorFlatListView = () => {
       
     })
   },[]); 
-
+  
+ 
   return (
     <View style={{marginTop:5,marginLeft:10,paddingBottom:20}}>
         <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18,fontWeight:'400',letterSpacing:2}]}>AUTHORS FOR YOU !!</Text> 
@@ -124,14 +131,14 @@ const AuthorFlatListView = () => {
           data={authorList}
           keyExtractor ={(item) => item._id}
           renderItem={({item}) => (
+              
               <TouchableOpacity 
                   onPress={()=> navigate.navigate("AuthorDetails",{
                       authorID : item._id,
                       authorName : item.name,
                       authorImage : item.imageUrl,
-                      authorDescription : item.description
-           
-           
+                      authorDescription : item.description,
+                      authorRelatedBooks : item.relatedBooks
                   })}>
                   <View style={{paddingVertical:10,paddingHorizontal:10,justifyContent:'center',alignItems:'center'}} >
                       <Image source={{uri:item.imageUrl}}

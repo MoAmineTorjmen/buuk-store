@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
  
   const BookFlatListView = ({authorImage,authorName,authorID,thisBookID,allBook} ) => {
     const navigation = useNavigation();
+    console.log(allBook.length)
     return (
         
       <View style={styles.bookList}>
@@ -32,7 +33,7 @@ import { useNavigation } from '@react-navigation/native';
                     :
                     <View></View>
                 }
-                {(item.author._id ==  authorID && item._id != thisBookID)? 
+                {( (item.author._id ==  authorID ||  item.authorId ==  authorID) && item._id != thisBookID)? 
                     <TouchableOpacity
                             onPress={() => navigation.push("BookDetail",{
                             bookId:  item._id,
