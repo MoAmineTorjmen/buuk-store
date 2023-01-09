@@ -42,7 +42,7 @@ const BookFlatListView = () => {
           data={bookList}
           keyExtractor={(item) => item._id}
           renderItem={({item}) =>(  
-          
+            
             <TouchableOpacity
               
                 onPress={() => navigation.push("BookDetail",{
@@ -56,7 +56,6 @@ const BookFlatListView = () => {
                   authorName: item.author.name,
                   authorImage: item.author.authorImageUrl,
                   AuthorDescription : item.author.description,
-                  categorie  : item.categories,
                   bookList : bookList
                 })}>
               <View style={{marginRight:10}}>
@@ -118,7 +117,6 @@ const AuthorFlatListView = () => {
     })
   },[]); 
   
- 
   return (
     <View style={{marginTop:5,marginLeft:10,paddingBottom:20}}>
         <Text style={[styles.TextReadinBookView,{letterSpacing:1,fontSize:18,fontWeight:'400',letterSpacing:2}]}>AUTHORS FOR YOU !!</Text> 
@@ -138,8 +136,10 @@ const AuthorFlatListView = () => {
                       authorName : item.name,
                       authorImage : item.imageUrl,
                       authorDescription : item.description,
-                      authorRelatedBooks : item.relatedBooks
+                      authorRelatedBooks : item.relatedBooks,
+                      categorie  : item.categories,
                   })}>
+                    <Text></Text>
                   <View style={{paddingVertical:10,paddingHorizontal:10,justifyContent:'center',alignItems:'center'}} >
                       <Image source={{uri:item.imageUrl}}
                              style={{

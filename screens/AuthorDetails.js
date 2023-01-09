@@ -6,7 +6,78 @@ import { useNavigation } from '@react-navigation/native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'; 
 import sanityClient from "../sanity" 
 
-
+const AuthorFlatListView = ({currentIdAuthor}) => {
+    const [authorList,setAuthorList] = useState([]);
+    const navigate = useNavigation();
+    useEffect(()=>{
+      sanityClient.fetch(
+        `
+        *[_type == 'author'  ]
+          {
+            _id, 
+            name,
+            "imageUrl" : image.asset -> url,
+            description,
+            "relatedBooks": *[_type=='book' && references(^._id)]
+            {  
+              ...,
+              "ImageURL" : mainImage.asset -> url,
+              categories[] -> {_id,title},
+            }    
+          }
+        `
+      ).then(data => {
+        setAuthorList(data)
+        
+      })
+    },[]); 
+    
+    return (
+      <View style={{marginTop:5,marginLeft:0,paddingBottom:20}}>
+          <Text style={styles.authorBookSectionText1}>Look for other Authors !!</Text> 
+          <Text style={styles.authorBookSectionText2}>Take a look at other authors that might interest you</Text>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style ={{marginTop:5 }}
+            contentContainerStyle={{justifyContent:'space-between'}}
+            data={authorList}
+            keyExtractor ={(item) => item._id}
+            renderItem={({item}) => (
+                   
+                 
+                    <TouchableOpacity 
+                        onPress={()=> navigate.navigate("AuthorDetails",{
+                            authorID : item._id,
+                            authorName : item.name,
+                            authorImage : item.imageUrl,
+                            authorDescription : item.description,
+                            authorRelatedBooks : item.relatedBooks,
+                            categorie  : item.categories,
+                        })}>
+                       {currentIdAuthor != item._id ? 
+                            <View style={{paddingVertical:10,paddingHorizontal:10,justifyContent:'center',alignItems:'center'}} >
+                            <Image source={{uri:item.imageUrl}}
+                                   style={{
+                                      width:100,
+                                      height:100,
+                                      borderRadius:40,
+                                      borderWidth:0.5,borderColor:COLORS.gray
+                                   }}/>
+                                 <Text  style={{color: COLORS.darkBlue,fontSize:15,fontWeight:'600',textAlign:'center',marginTop:5}}>{item.name}</Text>
+                                <Text  style={{color: COLORS.gray,fontSize:10,fontWeight:'400',letterSpacing:0.5}}>6425 Followers</Text>  
+                                  
+                            </View>
+                       
+                            : <></>}
+                    
+                </TouchableOpacity> 
+            )}/>
+      </View>
+    )
+  
+  }
+  
 const AuthorDetails = ({route}) => {
     const data = route.params
     const navigate = useNavigation();
@@ -40,7 +111,7 @@ const AuthorDetails = ({route}) => {
                 <Text style={styles.authorBookSectionText1}>{data.authorName} Buuks</Text>
                 <Text style={styles.authorBookSectionText2}>Take a look for the best {data.authorName} Buuks</Text>
                 <FlatList 
-                    style={{marginTop:10,flex:1, paddingBottom:300}}
+                    style={{marginTop:10,flex:1}}
                     data={data.authorRelatedBooks}
                     keyExtractor={(item) => item._id}
                     horizontal
@@ -62,7 +133,8 @@ const AuthorDetails = ({route}) => {
                                     categorie  : item.categories,
                                     bookList : data.authorRelatedBooks
                                 })}>
-                                <View style={{marginRight:10}}>
+                                
+                                    <View style={{marginRight:10}}>
                                     <Image source={{uri:item.ImageURL}} style={styles.itemImageOfList}/>
                                     <View style={styles.itemTextViewOfList}>
                                         
@@ -85,11 +157,11 @@ const AuthorDetails = ({route}) => {
                                             }
                                         </View> 
                                     </View>
-                                </View>      
-                            </TouchableOpacity>
+                                </View>     
+                            </TouchableOpacity> 
                         </View>    
                 )} />
-                    
+                <AuthorFlatListView currentIdAuthor ={data.authorID}/>    
             </View>
      
     </ScrollView>
@@ -126,7 +198,7 @@ const styles = StyleSheet.create({
     /* Author Informations Section ( Image + name + Description )  */
     authorInformationSection :
     {
-        marginTop:110,
+        marginTop:130,
         justifyContent:'center',
         alignItems:'center'
     },

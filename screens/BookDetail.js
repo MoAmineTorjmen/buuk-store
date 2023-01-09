@@ -6,9 +6,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
  
-  const BookFlatListView = ({authorImage,authorName,authorID,thisBookID,allBook} ) => {
+  const BookFlatListView = ({authorDescription,authorImage,authorName,authorID,thisBookID,allBook} ) => {
     const navigation = useNavigation();
-    console.log(allBook.length)
+ 
     return (
         
       <View style={styles.bookList}>
@@ -20,7 +20,14 @@ import { useNavigation } from '@react-navigation/native';
               <View style={{flexDirection:'row'}}>
                 {index == 0 ?
                      
-                        <TouchableOpacity style={{alignItems:'center',alignSelf:'center',marginRight:10}}>
+                        <TouchableOpacity style={{alignItems:'center',alignSelf:'center',marginRight:10}}
+                            onPress={()=> navigation.navigate("AuthorDetails",{
+                                authorID : authorID,
+                                authorName : authorName,
+                                authorImage : authorImage,
+                                authorDescription : authorDescription,
+                                authorRelatedBooks : allBook, 
+                            })}>
                             <Image source={{uri:authorImage}} 
                                 style={{width:120,height:120,borderRadius:50,borderWidth:0.5,borderColor:COLORS.gray}}/>
                             
@@ -42,9 +49,9 @@ import { useNavigation } from '@react-navigation/native';
                             rate : item.rating,
                             price: item.price,
                             bookDescription : item.description,
-                            authorId: item.author._id,
-                            authorName: item.author.name,
-                            authorImage: item.author.authorImageUrl,
+                            authorId: authorID  ,
+                            authorName:  authorName ,
+                            authorImage: authorImage,
                             categorie  : item.categories,
                             bookList : allBook
                             })}>
@@ -208,9 +215,8 @@ const BookDetail = ({route}) => {
                     
                     <View style={{flexDirection:'row',marginTop:10}}>
                         <Text   >BY  </Text>
-                        <TouchableOpacity>  
-                            <Text  style={{color: COLORS.lightBlue}}>{data.authorName}</Text> 
-                        </TouchableOpacity>
+                        <Text  style={{color: COLORS.lightBlue}}>{data.authorName}</Text> 
+                       
 
                     </View>
                     <View style={{marginTop:5}}>
@@ -247,7 +253,7 @@ const BookDetail = ({route}) => {
                         <Text style={{fontSize:20,fontWeight:'700',marginBottom:5,marginTop:20,color:COLORS.darkBlue}}>Author</Text>
                         <Text style={{fontSize:14,fontWeight:'300',marginBottom:5,textAlign:'justify',lineHeight:18}}>{data.AuthorDescription}</Text>
                        
-                        <BookFlatListView authorImage={data.authorImage} authorName = {data.authorName} authorID = {data.authorId} thisBookID= {data.bookId} allBook = {allBookList} /> 
+                        <BookFlatListView authorDescription={data.AuthorDescription} authorImage={data.authorImage} authorName = {data.authorName} authorID = {data.authorId} thisBookID= {data.bookId} allBook = {allBookList} /> 
 
                     </View>
                     <View>
